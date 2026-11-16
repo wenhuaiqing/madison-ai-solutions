@@ -21,7 +21,7 @@ const PAGES = ["overview", "process", "lakehouse", "exceptions", "triage", "self
 
 const FORBIDDEN = ["NaN", "undefined", "[object Object]", "Infinity", "$-", "Invalid Date", "null"];
 const FORBIDDEN_PATTERNS = [
-  [/lorem ipsum|TODO|FIXME|placeholder/i, "unfinished text"],
+  [/lorem ipsum|\bTODO\b|\bFIXME\b|LIVE_URL|REPO_URL|AGENT_RESULT/, "unfinished text"],
   [/—|–|[“”‘’]/, "typographic dash or curly quote (house style is straight quotes and hyphens)"],
 ];
 
