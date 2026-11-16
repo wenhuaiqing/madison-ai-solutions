@@ -36,6 +36,8 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
+          # Pruning hangs while a server started from this job is still alive.
+          prune-cache: false
 
       - name: Build the quarter and verify it against the manifest
         working-directory: backend
@@ -68,6 +70,8 @@ jobs:
           cd frontend
           BASE=http://localhost:5251 node evals/check-pages.mjs
           BASE=http://localhost:5251 TOKEN=$DEMO_WRITE_TOKEN node evals/flow.mjs
+          pkill -f "uvicorn src.main:app" || true
+          pkill -f vite || true
 
   images:
     needs: checks
