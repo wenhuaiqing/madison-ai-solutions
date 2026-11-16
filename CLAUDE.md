@@ -61,5 +61,7 @@ Operator path: `TOKEN=<DEMO_WRITE_TOKEN> node evals/flow.mjs`.
 - Azure: one resource group, scale to zero, no registry, no vault, no database.
   Do not add a resource that costs money at rest.
 - Named for the business it was built for, and says so: the not-affiliated line
-  stays in the sidebar, the First 90 days page and the README. Never their logo
-  or colours, and nothing that claims to know how they operate.
+  stays in the sidebar, the First 90 days page and the README. It uses Madison
+  Group's public logo, favicon and palette (Owen's call, 17/11/2026), so that
+  line must never be removed or made less visible. Nothing claims to know how
+  they operate.

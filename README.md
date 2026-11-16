@@ -12,7 +12,9 @@ person would follow, including on invoices written to fool it.
 > invoices are invented and generated from a seed by
 > `backend/src/app/pipeline/generate.py`. Accounts payable was chosen because
 > every distributor has it, not because of anything known about how Madison
-> works.
+> works. The logo, favicon and colours are Madison Group's own, taken from
+> their public website, and are used only to show what the work would look
+> like in their hands.
 
 ## What it shows
 

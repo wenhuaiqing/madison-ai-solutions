@@ -1,122 +1,119 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-// The workbench's own palette - deliberately not Madison Group's brand. It
-// carries their name because it was built for them; it is not their product
-// and should never look like it.
+// Madison Group Enterprises' palette, taken from their public website, for an
+// application demo that is not affiliated with them (the sidebar says so).
 //
-//   ink      #14171C   the chrome: sidebar, hero tiles
-//   citron   #C9E265   the mark and the active nav state - chrome only, it
-//                      never carries text on a light surface
-//   teal     #0E6B63   interactive and "governed" (6.4:1 on white)
-//   violet   #5847C9   anything the triage agent produced, so "the model
-//                      said this" is never confused with "the data says this"
-//
-// Status colours always travel with a label (Badge); chart series are fixed
-// in order and never cycled.
+//   navy   #2E3C49   chrome: sidebar, hero tiles, primary buttons
+//   slate  #445B6D   the logo's grey; links and interactive controls
+//   red    #E31837   the logo's red; brand accents - active nav, card rules,
+//                    the "held" series. Never the only signal of a status:
+//                    badges always carry their label.
+//   violet #5847C9   anything the triage agent produced, so "the model said
+//                    this" is never confused with "the data says this"
 
 export const light = {
   name: "light",
-  bg: "#F4F5F7",
+  bg: "#F3F4F5",
   surface: "#FFFFFF",
-  surfaceRaised: "#FAFBFC",
-  border: "rgba(18,22,28,0.12)",
-  borderBright: "rgba(18,22,28,0.26)",
-  accent: "#0E6B63",
+  surfaceRaised: "#F8F8F8",
+  border: "rgba(46,60,73,0.13)",
+  borderBright: "rgba(46,60,73,0.28)",
+  accent: "#445B6D",
   accentText: "#FFFFFF",
-  accentGlow: "rgba(14,107,99,0.10)",
+  accentGlow: "rgba(68,91,109,0.10)",
   accent2: "#5847C9",
   accent2Glow: "rgba(88,71,201,0.10)",
-  text: "#12161C",
-  textMuted: "rgba(18,22,28,0.64)",
-  textDim: "rgba(18,22,28,0.34)",
+  text: "#1E2830",
+  textMuted: "rgba(30,40,48,0.66)",
+  textDim: "rgba(30,40,48,0.34)",
 
-  sidebarBg: "#14171C",
-  sidebarText: "rgba(255,255,255,0.72)",
-  sidebarActive: "rgba(201,226,101,0.14)",
-  sidebarActiveText: "#C9E265",
+  sidebarBg: "#2E3C49",
+  sidebarText: "rgba(255,255,255,0.78)",
+  sidebarActive: "rgba(227,24,55,0.22)",
+  sidebarActiveText: "#FFFFFF",
   sidebarBorder: "rgba(255,255,255,0.10)",
-  sidebarMark: "#C9E265",
-  sidebarMuted: "rgba(255,255,255,0.52)",
-  sidebarGroup: "rgba(255,255,255,0.38)",
+  sidebarMark: "#E31837",
+  sidebarMuted: "rgba(255,255,255,0.58)",
+  sidebarGroup: "rgba(255,255,255,0.45)",
 
   headerBg: "#FFFFFF",
-  headerText: "#12161C",
-  headerMuted: "rgba(18,22,28,0.60)",
-  headerBorder: "rgba(18,22,28,0.10)",
-  headerAccent: "#0E6B63",
+  headerText: "#1E2830",
+  headerMuted: "rgba(30,40,48,0.62)",
+  headerBorder: "rgba(46,60,73,0.12)",
+  headerAccent: "#E31837",
 
-  ctaBg: "#12161C",
+  ctaBg: "#2E3C49",
   ctaText: "#FFFFFF",
-  ctaHoverBg: "#0E6B63",
+  ctaHoverBg: "#E31837",
   ctaHoverText: "#FFFFFF",
 
-  cardRule: "#A9C13F",
-  tableHead: "#F1F3F5",
-  statHeroBg: "#14171C",
+  cardRule: "#E31837",
+  tableHead: "#EEF0F2",
+  statHeroBg: "#2E3C49",
   statHeroText: "#FFFFFF",
-  statHeroMuted: "rgba(255,255,255,0.70)",
-  rowHover: "rgba(18,22,28,0.035)",
-  rowDivider: "rgba(18,22,28,0.07)",
-  grid: "rgba(18,22,28,0.08)",
-  code: "rgba(18,22,28,0.05)",
-  series: ["#2F6FB5", "#C27E1E", "#6B5CA5", "#2E9A96"],
-  status: { good: "#1F7A5A", warning: "#8A6410", serious: "#B4562A", critical: "#A8324B", neutral: "#5B5E6B", ai: "#5847C9" },
+  statHeroMuted: "rgba(255,255,255,0.72)",
+  rowHover: "rgba(46,60,73,0.04)",
+  rowDivider: "rgba(46,60,73,0.08)",
+  grid: "rgba(46,60,73,0.09)",
+  code: "rgba(46,60,73,0.06)",
+  series: ["#445B6D", "#E31837", "#909DAB", "#2E9A96"],
+  status: { good: "#1F7A5A", warning: "#8A6410", serious: "#B4562A", critical: "#B0122B", neutral: "#5B6470", ai: "#5847C9" },
   statusBg: {
     good: "rgba(31,122,90,0.10)", warning: "rgba(227,162,59,0.20)", serious: "rgba(180,86,42,0.12)",
-    critical: "rgba(168,50,75,0.10)", neutral: "rgba(18,22,28,0.06)", ai: "rgba(88,71,201,0.10)",
+    critical: "rgba(227,24,55,0.09)", neutral: "rgba(46,60,73,0.07)", ai: "rgba(88,71,201,0.10)",
   },
 };
 
 export const dark = {
   name: "dark",
-  bg: "#0D1117",
-  surface: "#161B22",
-  surfaceRaised: "#1C2330",
-  border: "rgba(230,237,243,0.11)",
-  borderBright: "rgba(230,237,243,0.24)",
-  accent: "#3FB6A8",
-  accentText: "#0D1117",
-  accentGlow: "rgba(63,182,168,0.14)",
+  bg: "#141B21",
+  surface: "#1C252D",
+  surfaceRaised: "#232E38",
+  border: "rgba(228,229,230,0.11)",
+  borderBright: "rgba(228,229,230,0.24)",
+  accent: "#9DB3C6",
+  accentText: "#141B21",
+  accentGlow: "rgba(157,179,198,0.14)",
   accent2: "#A99BFF",
   accent2Glow: "rgba(169,155,255,0.14)",
-  text: "#E6EDF3",
-  textMuted: "rgba(230,237,243,0.62)",
-  textDim: "rgba(230,237,243,0.32)",
+  text: "#E8EBEE",
+  textMuted: "rgba(232,235,238,0.64)",
+  textDim: "rgba(232,235,238,0.32)",
 
-  sidebarBg: "#090C10",
-  sidebarText: "rgba(230,237,243,0.68)",
-  sidebarActive: "rgba(201,226,101,0.13)",
-  sidebarActiveText: "#C9E265",
-  sidebarBorder: "rgba(230,237,243,0.08)",
-  sidebarMark: "#C9E265",
-  sidebarMuted: "rgba(230,237,243,0.50)",
-  sidebarGroup: "rgba(230,237,243,0.34)",
+  sidebarBg: "#1F2A34",
+  sidebarText: "rgba(232,235,238,0.74)",
+  sidebarActive: "rgba(227,24,55,0.24)",
+  sidebarActiveText: "#FFFFFF",
+  sidebarBorder: "rgba(232,235,238,0.08)",
+  sidebarMark: "#E31837",
+  sidebarMuted: "rgba(232,235,238,0.54)",
+  sidebarGroup: "rgba(232,235,238,0.40)",
 
-  headerBg: "#0D1117",
-  headerText: "#E6EDF3",
-  headerMuted: "rgba(230,237,243,0.60)",
-  headerBorder: "rgba(230,237,243,0.09)",
-  headerAccent: "#3FB6A8",
+  headerBg: "#141B21",
+  headerText: "#E8EBEE",
+  headerMuted: "rgba(232,235,238,0.62)",
+  headerBorder: "rgba(232,235,238,0.09)",
+  headerAccent: "#FF5C73",
 
-  ctaBg: "#E6EDF3",
-  ctaText: "#0D1117",
-  ctaHoverBg: "#3FB6A8",
-  ctaHoverText: "#0D1117",
+  ctaBg: "#E8EBEE",
+  ctaText: "#141B21",
+  ctaHoverBg: "#FF5C73",
+  ctaHoverText: "#141B21",
 
-  cardRule: "#8FA534",
-  tableHead: "#1C2330",
-  statHeroBg: "#C9E265",
-  statHeroText: "#0D1117",
-  statHeroMuted: "rgba(13,17,23,0.72)",
-  rowHover: "rgba(230,237,243,0.04)",
-  rowDivider: "rgba(230,237,243,0.07)",
-  grid: "rgba(230,237,243,0.09)",
-  code: "rgba(230,237,243,0.06)",
-  series: ["#6FA8E6", "#E0A84E", "#A596DE", "#4FC2BD"],
-  status: { good: "#5CCB9F", warning: "#E0BE6E", serious: "#F08A5D", critical: "#E8788F", neutral: "#A7A9B4", ai: "#A99BFF" },
+  cardRule: "#E31837",
+  tableHead: "#232E38",
+  statHeroBg: "#E31837",
+  statHeroText: "#FFFFFF",
+  statHeroMuted: "rgba(255,255,255,0.80)",
+  rowHover: "rgba(232,235,238,0.04)",
+  rowDivider: "rgba(232,235,238,0.07)",
+  grid: "rgba(232,235,238,0.09)",
+  code: "rgba(232,235,238,0.06)",
+  series: ["#9DB3C6", "#FF5C73", "#C3CBD3", "#4FC2BD"],
+  status: { good: "#5CCB9F", warning: "#E0BE6E", serious: "#F08A5D", critical: "#FF7A8C", neutral: "#A7AEB6", ai: "#A99BFF" },
   statusBg: {
     good: "rgba(92,203,159,0.14)", warning: "rgba(224,190,110,0.16)", serious: "rgba(240,138,93,0.14)",
-    critical: "rgba(232,120,143,0.14)", neutral: "rgba(255,255,255,0.08)", ai: "rgba(169,155,255,0.14)",
+    critical: "rgba(255,122,140,0.14)", neutral: "rgba(255,255,255,0.08)", ai: "rgba(169,155,255,0.14)",
   },
 };
 

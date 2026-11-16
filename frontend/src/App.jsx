@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Menu, Moon, Sun, X } from "lucide-react";
 import { NavLink, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
-import Mark from "./components/Mark.jsx";
 import { writeToken } from "./config.js";
 import { useTheme } from "./context/ThemeContext.jsx";
 import { useApi } from "./lib/api.js";
@@ -62,15 +61,14 @@ function NavList({ onPick }) {
 
 function Brand() {
   const { t } = useTheme();
+  // Madison Group's own logo, recoloured white for the navy chrome. Used with
+  // the not-affiliated line beneath the navigation on every page.
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-      <Mark colour={t.sidebarMark} size={28} />
-      <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.15 }}>
-        <span style={{ fontSize: 15, fontWeight: 800, letterSpacing: "0.12em", color: "#FFFFFF" }}>MADISON</span>
-        <span style={{ fontSize: 10.5, color: t.sidebarMuted, fontWeight: 600, marginTop: 3 }}>
-          AI solutions: process to adoption
-        </span>
-      </div>
+    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      <img src="/madison-logo-negative.svg" alt="Madison Group Enterprises" style={{ width: 172, height: "auto", display: "block" }} />
+      <span style={{ fontSize: 10.5, color: t.sidebarMuted, fontWeight: 600, letterSpacing: "0.02em" }}>
+        AI solutions workbench
+      </span>
     </div>
   );
 }
@@ -108,7 +106,7 @@ function Header({ narrow, onMenu, menuOpen }) {
           }}>
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-          <Brand />
+          <div style={{ transform: "scale(0.82)", transformOrigin: "left center" }}><Brand /></div>
         </>
       ) : (
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
