@@ -1,0 +1,70 @@
+# Requirements for AI-01, each traced to the test that proves it and the user
+# acceptance scenario that shows it. backend/tests/test_delivery.py fails if a
+# requirement names a test that does not exist.
+requirements:
+  - id: REQ-01
+    statement: Every document that arrives is accounted for; none is dropped.
+    source: Financial controller
+    priority: Must
+    proved_by: [test_pipeline.py::test_every_document_is_accounted_for]
+    uat: [UAT-05, UAT-06]
+  - id: REQ-02
+    statement: An invoice is matched only when order, receipt and price agree within policy.
+    source: Financial controller
+    priority: Must
+    proved_by: [test_pipeline.py::test_every_seeded_defect_is_found_from_the_data, test_pipeline.py::test_nothing_clean_is_held]
+    uat: [UAT-02, UAT-03]
+  - id: REQ-03
+    statement: The same supplier invoice is never matched twice, however its number is written.
+    source: AP team lead
+    priority: Must
+    proved_by: [test_pipeline.py::test_resent_invoices_are_caught_under_any_formatting]
+    uat: [UAT-01]
+  - id: REQ-04
+    statement: An invoice billed in drums or boxes against an order in metres or each matches without a person.
+    source: AP team lead
+    priority: Should
+    proved_by: [test_pipeline.py::test_pack_billing_matches_without_a_hold]
+    uat: [UAT-04]
+  - id: REQ-05
+    statement: A change of bank details is never released from the exception queue.
+    source: Financial controller
+    priority: Must
+    proved_by: [test_workflow.py::test_a_bank_detail_hold_cannot_be_released]
+    uat: [UAT-07]
+  - id: REQ-06
+    statement: The agent proposes and a person decides; the agent can write nothing.
+    source: AI delivery manager
+    priority: Must
+    proved_by: [test_workflow.py::test_the_agent_cannot_decide, test_workflow.py::test_writes_need_the_token]
+    uat: []
+  - id: REQ-07
+    statement: Whoever proposes a rule change cannot approve it.
+    source: Financial controller
+    priority: Must
+    proved_by: [test_workflow.py::test_the_proposer_cannot_approve]
+    uat: []
+  - id: REQ-08
+    statement: Bank account numbers never reach the language model.
+    source: AI delivery manager
+    priority: Must
+    proved_by: [test_guards.py::test_no_bank_account_reaches_the_agent]
+    uat: [UAT-10]
+  - id: REQ-09
+    statement: Text on an invoice is treated as data; it cannot instruct the agent, and a verdict that pays what should be held fails however it is argued.
+    source: AI delivery manager
+    priority: Must
+    proved_by: [test_guards.py::test_paying_what_should_be_held_is_harmful, test_guards.py::test_adversarial_cases_exist_and_the_runbook_ignores_them]
+    uat: []
+  - id: REQ-10
+    statement: The same raw files always produce the same governed tables.
+    source: Solutions analyst
+    priority: Should
+    proved_by: [test_pipeline.py::test_rerun_from_raw_is_identical]
+    uat: []
+  - id: REQ-11
+    statement: Freight inside policy does not hold an invoice.
+    source: Procurement lead
+    priority: Should
+    proved_by: [test_pipeline.py::test_freight_inside_policy_is_accepted]
+    uat: [UAT-09]

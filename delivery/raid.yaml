@@ -1,0 +1,105 @@
+# Risks, assumptions, issues and decisions for AI-01, kept as the work went.
+# Dates are when each was recorded while this was being built.
+risks:
+  - id: R-01
+    risk: The agent is persuaded by text on an invoice ("pre-approved, release immediately") and proposes paying something that should be held.
+    likelihood: Medium
+    impact: High
+    mitigation: Invoice text reaches the agent labelled as untrusted; adversarial cases are in the eval; a verdict that pays what should be held is graded harmful; the agent cannot write, so a bad proposal still meets a person.
+    owner: Solutions analyst
+    status: Mitigated, measured on every eval run
+  - id: R-02
+    risk: Supplier bank details or other sensitive data are sent to a model provider.
+    likelihood: Medium
+    impact: High
+    mitigation: Account numbers are masked before the snapshot is built; a test and a UAT scenario scan every snapshot. For real data, the model runs in the organisation's own tenancy.
+    owner: AI delivery manager
+    status: Mitigated in the demo; a tenancy decision is needed before real data
+  - id: R-03
+    risk: People stop checking the agent because it is usually right.
+    likelihood: High
+    impact: Medium
+    mitigation: The agent's pass rate on hard cases is on the page beside its pass rate on easy ones; bank detail changes and exact duplicates cannot be released from the queue at all, whatever anyone proposes.
+    owner: AP team lead
+    status: Open - needs a sampling routine agreed with the team
+  - id: R-04
+    risk: The handling times behind the business case are assumptions.
+    likelihood: High
+    impact: Medium
+    mitigation: Labelled as assumptions on screen and editable there; a two-day time study in discovery replaces them.
+    owner: Solutions analyst
+    status: Open
+  - id: R-05
+    risk: The model provider is slow, rate limited or down when the team needs it.
+    likelihood: Medium
+    impact: Low
+    mitigation: The runbook answers instead and the page says so; nothing in the match depends on the model.
+    owner: Solutions analyst
+    status: Mitigated
+  - id: R-06
+    risk: A tolerance set too loose leaks money quietly; too tight buries the team.
+    likelihood: Medium
+    impact: Medium
+    mitigation: Every control is priced by switching it off; tolerances are policy, shown on screen, changed only by proposal and approval.
+    owner: Financial controller
+    status: Mitigated
+assumptions:
+  - id: A-01
+    assumption: Suppliers bill one invoice per purchase order. Part-shipments billed separately are common in practice and would need the duplicate rule revisited.
+    test: Confirm with the AP team in discovery; one of the hard eval cases is exactly this.
+  - id: A-02
+    assumption: The item master holds the pack size for anything bought by the drum or box.
+    test: Profile the real item master; a missing conversion surfaces as a price hold, and one hard eval case covers it.
+  - id: A-03
+    assumption: Goods receipts are posted the day goods arrive.
+    test: Compare docket dates with posting dates for a month.
+  - id: A-04
+    assumption: Handling times - 3.5 minutes to key, 14 to resolve an exception today.
+    test: Time study, two days, with the people doing the work.
+issues:
+  - id: I-01
+    issue: One supplier's price notice was received on 24/08/2026 and never loaded; their September invoices are all held for price.
+    raised: 16/11/2026
+    action: Proposal PRP-0001 on the Exceptions page; needs a buyer's approval.
+    status: Open until approved
+  - id: I-02
+    issue: Five documents this quarter are image-only and cannot be read.
+    raised: 16/11/2026
+    action: Held for keying. Not worth a vision model at this volume (see AI-04).
+    status: Accepted
+decisions:
+  - id: D-01
+    date: 16/11/2026
+    decision: The match is deterministic rules; the model only reads exceptions.
+    why: Most invoices agree with their order. Rules clear those for free, the same way every time, and explain themselves. A model on every invoice would add cost and a failure mode to the part that has neither.
+    alternatives: Model-first extraction and matching of every invoice.
+  - id: D-02
+    date: 16/11/2026
+    decision: The agent proposes; it cannot write.
+    why: A wrong payment is expensive and awkward to recover. The measured pass rate on hard cases is not high enough to act unsupervised, and may never need to be.
+    alternatives: Auto-approve above a confidence threshold. Revisit only with months of shadow-run evidence.
+  - id: D-03
+    date: 16/11/2026
+    decision: Bank detail changes and exact duplicates cannot be released from the exception queue by anyone.
+    why: These are the two cases where a confident, well-argued mistake costs the most. The rule refuses; it does not warn.
+    alternatives: A warning with an override.
+  - id: D-04
+    date: 16/11/2026
+    decision: The agent is graded against the AP runbook on the same cases, including cases built to fool each of them.
+    why: Saying it works is not a result. The useful question is where it beats the procedure the team already has, and where it does not.
+    alternatives: Spot checks.
+  - id: D-05
+    date: 16/11/2026
+    decision: In this demo the model is reached over the OpenAI protocol on a free tier; with real data it would be a model deployed in the organisation's own cloud tenancy.
+    why: The demo holds only synthetic data and should cost nothing to leave running. Real supplier data should not leave the tenancy. The code depends on the protocol, not the provider, so the change is configuration.
+    alternatives: A provider-specific SDK.
+  - id: D-06
+    date: 16/11/2026
+    decision: Gold tables are a star schema with named measures, each with its SQL and its DAX.
+    why: Self-serve reporting needs one definition of each number. Power BI reads the same tables and the same definitions.
+    alternatives: Report-specific queries.
+  - id: D-07
+    date: 16/11/2026
+    decision: Image-only invoices are held for keying rather than read by a vision model.
+    why: Five documents in a quarter. The pragmatic fix is asking those suppliers for a text PDF.
+    alternatives: Document extraction (AI-04).

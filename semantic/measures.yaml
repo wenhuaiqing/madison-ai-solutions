@@ -1,0 +1,59 @@
+# The published measures: one definition of each number, with the SQL that
+# runs here and the DAX that would sit in the Power BI semantic model over the
+# same star schema. The page evaluates the SQL live; the DAX is the same
+# definition, written for the model, and is not executed here.
+measures:
+  - id: invoices_received
+    name: Invoices received
+    format: int
+    description: Documents that reached the accounts payable inbox.
+    sql: SELECT count(*) FROM fact_invoice
+    dax: Invoices Received = COUNTROWS ( fact_invoice )
+  - id: invoice_value
+    name: Invoice value (AUD)
+    format: aud
+    description: Total billed, converted at the month's rate.
+    sql: SELECT sum(total_aud) FROM fact_invoice
+    dax: Invoice Value AUD = SUM ( fact_invoice[total_aud] )
+  - id: straight_through_rate
+    name: Straight-through rate
+    format: pct
+    description: Share of invoices matched with nobody touching them.
+    sql: SELECT count(*) FILTER (WHERE status = 'matched') / count(*) FROM fact_invoice
+    dax: Straight Through Rate = DIVIDE ( CALCULATE ( COUNTROWS ( fact_invoice ), fact_invoice[status] = "matched" ), COUNTROWS ( fact_invoice ) )
+  - id: exceptions_open
+    name: Invoices held
+    format: int
+    description: Invoices a check has held for a person.
+    sql: SELECT count(*) FROM fact_invoice WHERE status = 'held'
+    dax: Invoices Held = CALCULATE ( COUNTROWS ( fact_invoice ), fact_invoice[status] = "held" )
+  - id: value_at_risk
+    name: Held before payment (AUD)
+    format: aud
+    description: What would have been paid in error, or without approval, had the held invoices been paid as billed.
+    sql: SELECT sum(at_risk_aud) FROM fact_invoice WHERE status = 'held'
+    dax: Held Before Payment AUD = CALCULATE ( SUM ( fact_invoice[at_risk_aud] ), fact_invoice[status] = "held" )
+  - id: price_variance_value
+    name: Billed above order price (AUD)
+    format: aud
+    description: Value billed above the order price across all lines, before any tolerance.
+    sql: SELECT sum((unit_price_matched - po_unit_price) * qty_matched * amount_aud / amount) FROM fact_invoice_line WHERE unit_price_matched > po_unit_price
+    dax: Billed Above Order AUD = SUMX ( FILTER ( fact_invoice_line, fact_invoice_line[unit_price_matched] > fact_invoice_line[po_unit_price] ), ( fact_invoice_line[unit_price_matched] - fact_invoice_line[po_unit_price] ) * fact_invoice_line[qty_matched] * DIVIDE ( fact_invoice_line[amount_aud], fact_invoice_line[amount] ) )
+  - id: non_po_spend
+    name: Spend without an order (AUD)
+    format: aud
+    description: Invoices that quote no purchase order.
+    sql: SELECT coalesce(sum(total_aud), 0) FROM fact_invoice WHERE po_number IS NULL AND supplier_id IS NOT NULL
+    dax: Spend Without Order AUD = CALCULATE ( SUM ( fact_invoice[total_aud] ), ISBLANK ( fact_invoice[po_number] ), NOT ISBLANK ( fact_invoice[supplier_id] ) )
+  - id: suppliers_billing
+    name: Suppliers billing
+    format: int
+    description: Suppliers with at least one invoice in the period.
+    sql: SELECT count(DISTINCT supplier_id) FROM fact_invoice
+    dax: Suppliers Billing = DISTINCTCOUNT ( fact_invoice[supplier_id] )
+  - id: open_order_value
+    name: Ordered, not yet received (order currency)
+    format: num
+    description: Order lines with a balance still to arrive, in order currency.
+    sql: SELECT sum((qty - received_qty) * unit_price) FROM fact_po_line WHERE received_qty < qty
+    dax: Ordered Not Received = SUMX ( FILTER ( fact_po_line, fact_po_line[received_qty] < fact_po_line[qty] ), ( fact_po_line[qty] - fact_po_line[received_qty] ) * fact_po_line[unit_price] )

@@ -1,0 +1,59 @@
+# An illustrative AI roadmap for a distributor. The first initiative is built
+# and running in this repository; the rest are what its data turned up, sized
+# from that data. A real roadmap comes out of discovery with the teams.
+initiatives:
+  - id: AI-01
+    name: Accounts payable exception triage
+    stage: Pilot ready
+    teams: [Finance, Procurement]
+    problem: Every supplier invoice is keyed and matched by hand, so the people who could resolve the hard ones spend the day on the easy ones.
+    approach: A three-way match that clears what agrees and holds what does not, with an agent drafting the first read of each held invoice for a person to decide.
+    measure: Share of invoices matched with nobody touching them; hours per quarter; money held before it is paid in error.
+    ai_role: Proposes a category, an action and its evidence for each held invoice. Cannot release, reject or change anything.
+    risk_tier: Medium - financial, but advisory only and every decision is a person's
+    next: Two-week shadow run beside the AP team on live invoices; compare its proposals with what they actually did.
+    links: [exceptions, triage, value]
+  - id: AI-02
+    name: Supplier price list intake
+    stage: Discovery
+    teams: [Procurement]
+    problem: A supplier's price notice arrived and was never loaded, so a month of their invoices was held one at a time for the same reason.
+    approach: Read price notices from the procurement inbox into a proposed price list version with its effective date; a buyer approves the load.
+    measure: Days from notice received to price list in force; invoices held for a price already agreed.
+    ai_role: Extracts supplier, effective date and prices from the notice into a typed proposal.
+    risk_tier: Medium - a wrong price list mispays every invoice after it, so the load is always approved by a buyer
+    next: Count how many notices arrived last year and through which channels before building anything.
+    links: [exceptions]
+  - id: AI-03
+    name: Customer quote request to product lines
+    stage: Backlog
+    teams: [Sales]
+    problem: Quote requests arrive as free text and spreadsheets; someone matches each line to a product code by hand.
+    approach: Match each requested line to the catalogue with a confidence, and send only the uncertain lines to a person.
+    measure: Time from request to quote; share of lines matched without a person; lines corrected after the quote went out.
+    ai_role: Proposes the product code for each line; the sales desk confirms before a quote is issued.
+    risk_tier: Low to medium - a wrong match is caught at quote review
+    next: Sit with the sales desk for a week and collect a labelled sample of real requests. No sample, no build.
+    links: []
+  - id: AI-04
+    name: Image-only invoices
+    stage: Not yet worth building
+    teams: [Finance]
+    problem: A few invoices arrive as scans with no text layer and are keyed by hand.
+    approach: Document extraction with a vision model, each field checked against the order before it is trusted.
+    measure: Share of documents that still need keying.
+    ai_role: Extracts fields from the image.
+    risk_tier: Medium - a misread amount is a mispayment unless the match catches it
+    next: Nothing yet. The volume this quarter does not pay for it; asking the suppliers concerned to send a text PDF is cheaper.
+    links: [process]
+  - id: AI-05
+    name: Questions over the governed tables
+    stage: Candidate
+    teams: [Finance, Sales, Procurement]
+    problem: Ad hoc data questions land on the help desk one at a time.
+    approach: Publish the measures people keep asking for, then put a question box over those measures - not over raw tables.
+    measure: Share of enquiries answered from a published measure without the help desk.
+    ai_role: Turns a question into a query over published measures, behind a read-only validator.
+    risk_tier: Low - read only, over governed data
+    next: Keep logging enquiries; build the box when the log shows the same questions recurring.
+    links: [selfserve]

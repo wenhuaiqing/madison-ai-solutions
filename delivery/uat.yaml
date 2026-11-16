@@ -1,0 +1,80 @@
+# User acceptance scenarios, written the way the people signing off would say
+# them. Each runs as a query against the governed tables on every build and
+# after every reprocess; the page shows the number it found, not a tick.
+scenarios:
+  - id: UAT-01
+    owner: AP team lead
+    scenario: A supplier resends an invoice with the number written differently. It is not matched a second time.
+    sql: >
+      SELECT count(*) FROM (SELECT supplier_id, invoice_number_normalised FROM fact_invoice
+      WHERE status = 'matched' AND supplier_id IS NOT NULL GROUP BY 1, 2 HAVING count(*) > 1) AS t
+    expect: 0
+    measures: invoice numbers matched more than once
+  - id: UAT-02
+    owner: Financial controller
+    scenario: Nothing is matched at a unit price above the order beyond policy.
+    sql: >
+      SELECT count(*) FROM fact_invoice_line l JOIN fact_invoice i USING (doc_id)
+      WHERE i.status = 'matched' AND l.price_variance_pct > 0.02
+      AND (l.unit_price_matched - l.expected_unit_price) * l.qty_matched * l.amount_aud / l.amount > 5
+    expect: 0
+    measures: matched lines over the price tolerance
+  - id: UAT-03
+    owner: Financial controller
+    scenario: Nothing is matched for goods that have not been received.
+    sql: >
+      SELECT count(*) FROM fact_invoice_line l JOIN fact_invoice i USING (doc_id)
+      WHERE i.status = 'matched' AND l.qty_matched > l.received_qty
+    expect: 0
+    measures: matched lines billed beyond receipt
+  - id: UAT-04
+    owner: AP team lead
+    scenario: An invoice billed in drums against an order in metres matches without anyone converting it.
+    sql: >
+      SELECT count(*) FROM fact_invoice WHERE flags LIKE '%uom_converted%' AND status <> 'matched'
+    expect: 0
+    measures: converted invoices still held
+  - id: UAT-05
+    owner: Financial controller
+    scenario: Every document that reached the inbox is in the invoice table, matched or held.
+    sql: >
+      SELECT (SELECT sum("rows") FROM raw_files WHERE file LIKE 'ap_inbox/%') - (SELECT count(*) FROM fact_invoice)
+    expect: 0
+    measures: documents unaccounted for
+  - id: UAT-06
+    owner: AP team lead
+    scenario: Every held invoice says why it is held.
+    sql: >
+      SELECT (SELECT count(*) FROM fact_invoice WHERE status = 'held')
+      - (SELECT count(*) FROM exceptions WHERE reason IS NOT NULL AND length(reason) > 10)
+    expect: 0
+    measures: held invoices without a reason
+  - id: UAT-07
+    owner: Financial controller
+    scenario: An invoice showing a bank account that is not on the supplier master is never matched.
+    sql: >
+      SELECT count(*) FROM fact_invoice WHERE status = 'matched' AND bank_matches_master = false
+    expect: 0
+    measures: matched invoices with an unverified account
+  - id: UAT-08
+    owner: Procurement lead
+    scenario: An invoice with no purchase order is never matched; it goes to the budget owner.
+    sql: >
+      SELECT count(*) FROM fact_invoice WHERE status = 'matched' AND po_number IS NULL
+    expect: 0
+    measures: matched invoices without an order
+  - id: UAT-09
+    owner: Procurement lead
+    scenario: Freight inside policy does not hold an invoice.
+    sql: >
+      SELECT count(*) FROM fact_invoice WHERE check_id = 'unplanned_charge'
+      AND charges * total_aud / total <= 60 AND charges <= 0.05 * subtotal
+    expect: 0
+    measures: invoices held for freight inside policy
+  - id: UAT-10
+    owner: AI delivery manager
+    scenario: No full bank account number appears in anything the agent can read.
+    sql: >
+      SELECT count(*) FROM cases WHERE regexp_matches(world, '[0-9]{8}')
+    expect: 0
+    measures: agent snapshots containing an eight-digit account number

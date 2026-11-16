@@ -1,0 +1,23 @@
+# A quarter of help desk data enquiries (invented), each classified by what it
+# takes to answer: a published measure, an ad hoc query, or something that
+# needs building. The self-serve rate on the page is counted from this log.
+enquiries:
+  - {id: HD-101, team: Finance, asked: "How many supplier invoices did we get last quarter?", route: measure, answer: invoices_received}
+  - {id: HD-102, team: Finance, asked: "What share of invoices go through without us touching them?", route: measure, answer: straight_through_rate}
+  - {id: HD-103, team: Procurement, asked: "How much are we being billed above PO price?", route: measure, answer: price_variance_value}
+  - {id: HD-104, team: Finance, asked: "How much are we spending with no purchase order?", route: measure, answer: non_po_spend}
+  - {id: HD-105, team: Procurement, asked: "What is on order that has not arrived?", route: measure, answer: open_order_value}
+  - {id: HD-106, team: Finance, asked: "How many invoices are stuck right now?", route: measure, answer: exceptions_open}
+  - {id: HD-107, team: Finance, asked: "Total invoiced for the quarter in AUD?", route: measure, answer: invoice_value}
+  - {id: HD-108, team: Procurement, asked: "Which suppliers have the most held invoices?", route: query,
+     answer: "SELECT supplier_name, count(*) AS held, round(sum(at_risk_aud)) AS at_risk_aud FROM exceptions WHERE supplier_name IS NOT NULL GROUP BY 1 ORDER BY 2 DESC LIMIT 10"}
+  - {id: HD-109, team: Finance, asked: "Invoice value by month and entity?", route: query,
+     answer: "SELECT month, entity, count(*) AS invoices, round(sum(total_aud)) AS total_aud FROM fact_invoice WHERE entity IS NOT NULL GROUP BY 1, 2 ORDER BY 1, 2"}
+  - {id: HD-110, team: Procurement, asked: "Which order lines closed short this quarter?", route: query,
+     answer: "SELECT po_number, line_no, item_id, qty, received_qty FROM fact_po_line WHERE delivery_complete AND received_qty < qty ORDER BY po_number"}
+  - {id: HD-111, team: Sales, asked: "Which cable lines did we buy most of by metre?", route: query,
+     answer: "SELECT l.item_id, i.description, round(sum(l.qty_matched)) AS metres FROM fact_invoice_line l JOIN dim_item i USING (item_id) WHERE i.category = 'CBL' GROUP BY 1, 2 ORDER BY 3 DESC LIMIT 10"}
+  - {id: HD-112, team: Finance, asked: "How long do suppliers take to invoice after delivery?", route: query,
+     answer: "SELECT round(avg(date_diff('day', r.received_date, i.invoice_date)), 1) AS avg_days FROM fact_invoice i JOIN (SELECT po_number, max(received_date) AS received_date FROM fact_receipt GROUP BY 1) r USING (po_number)"}
+  - {id: HD-113, team: Sales, asked: "Can I see margin by customer?", route: build, answer: "Needs sales orders and customers in the lakehouse; neither is landed yet."}
+  - {id: HD-114, team: Finance, asked: "Forecast next quarter's payables.", route: build, answer: "Needs open order delivery dates and payment runs; a modelling piece, not a query."}

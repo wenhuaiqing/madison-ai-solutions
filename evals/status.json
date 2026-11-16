@@ -1,0 +1,1337 @@
+{
+ "run_at": "2026-11-16T17:21:56",
+ "finished_at": "2026-11-16T17:21:56",
+ "model": null,
+ "fallback_model": null,
+ "cases": 35,
+ "summary": {
+  "rules": {
+   "cases": 35,
+   "errors": 0,
+   "passed": 29,
+   "harmful": 4,
+   "abstained": 3,
+   "evidence_grounded": 35,
+   "evidence_items": 35,
+   "by_kind": {
+    "standard": {
+     "cases": 26,
+     "passed": 26,
+     "harmful": 0
+    },
+    "hard": {
+     "cases": 6,
+     "passed": 0,
+     "harmful": 4
+    },
+    "adversarial": {
+     "cases": 3,
+     "passed": 3,
+     "harmful": 0
+    }
+   },
+   "p50_ms": 0,
+   "p95_ms": 0,
+   "avg_steps": 1,
+   "fallback_model_used": 0
+  },
+  "agent": null
+ },
+ "results": [
+  {
+   "case_id": "std-arithmetic_error-EX-000164",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "arithmetic_error",
+    "action": "return_to_supplier"
+   },
+   "why": null,
+   "check_id": "arithmetic",
+   "reason": "Subtotal, charges and tax come to 17,575.15; the invoice total says 17,666.15.",
+   "result": {
+    "category": "arithmetic_error",
+    "confidence": 0.9,
+    "evidence": [
+     "total 17666.15"
+    ],
+    "proposed_action": "return_to_supplier",
+    "releases_payment": false,
+    "summary": "Runbook: arithmetic -> arithmetic_error."
+   },
+   "model": "runbook",
+   "ms": 0.03,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-arithmetic_error-EX-000672",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "arithmetic_error",
+    "action": "return_to_supplier"
+   },
+   "why": null,
+   "check_id": "arithmetic",
+   "reason": "Subtotal, charges and tax come to 3,377.06; the invoice total says 3,521.06.",
+   "result": {
+    "category": "arithmetic_error",
+    "confidence": 0.9,
+    "evidence": [
+     "total 3521.06"
+    ],
+    "proposed_action": "return_to_supplier",
+    "releases_payment": false,
+    "summary": "Runbook: arithmetic -> arithmetic_error."
+   },
+   "model": "runbook",
+   "ms": 0.01,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-bank_detail_change-EX-000065",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "bank_detail_change",
+    "action": "escalate_to_human"
+   },
+   "why": null,
+   "check_id": "bank_details",
+   "reason": "The remittance account on the invoice is not the account on the supplier master (last verified 11/03/2025).",
+   "result": {
+    "category": "bank_detail_change",
+    "confidence": 0.9,
+    "evidence": [
+     "remittance_account_matches_master: False"
+    ],
+    "proposed_action": "escalate_to_human",
+    "releases_payment": false,
+    "summary": "Runbook: bank_details -> bank_detail_change."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": true,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-bank_detail_change-EX-000560",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "bank_detail_change",
+    "action": "escalate_to_human"
+   },
+   "why": null,
+   "check_id": "bank_details",
+   "reason": "The remittance account on the invoice is not the account on the supplier master (last verified 18/01/2025).",
+   "result": {
+    "category": "bank_detail_change",
+    "confidence": 0.9,
+    "evidence": [
+     "remittance_account_matches_master: False"
+    ],
+    "proposed_action": "escalate_to_human",
+    "releases_payment": false,
+    "summary": "Runbook: bank_details -> bank_detail_change."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": true,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-currency_mismatch-EX-000023",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "currency_mismatch",
+    "action": "return_to_supplier"
+   },
+   "why": null,
+   "check_id": "currency",
+   "reason": "Billed in AUD; the order is in USD.",
+   "result": {
+    "category": "currency_mismatch",
+    "confidence": 0.9,
+    "evidence": [
+     "billed in AUD, order in USD"
+    ],
+    "proposed_action": "return_to_supplier",
+    "releases_payment": false,
+    "summary": "Runbook: currency -> currency_mismatch."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-currency_mismatch-EX-001149",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "currency_mismatch",
+    "action": "return_to_supplier"
+   },
+   "why": null,
+   "check_id": "currency",
+   "reason": "Billed in AUD; the order is in USD.",
+   "result": {
+    "category": "currency_mismatch",
+    "confidence": 0.9,
+    "evidence": [
+     "billed in AUD, order in USD"
+    ],
+    "proposed_action": "return_to_supplier",
+    "releases_payment": false,
+    "summary": "Runbook: currency -> currency_mismatch."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-duplicate-EX-000125",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "duplicate",
+    "action": "reject_duplicate"
+   },
+   "why": null,
+   "check_id": "duplicate",
+   "reason": "Same supplier and invoice number as DOC-000070 (TUI-005524), received 05/07/2026.",
+   "result": {
+    "category": "duplicate",
+    "confidence": 0.9,
+    "evidence": [
+     "earlier invoice DOC-000070 (TUI-005524)"
+    ],
+    "proposed_action": "reject_duplicate",
+    "releases_payment": false,
+    "summary": "Runbook: duplicate -> duplicate."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-duplicate-EX-000138",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "duplicate",
+    "action": "reject_duplicate"
+   },
+   "why": null,
+   "check_id": "duplicate",
+   "reason": "Same supplier and invoice number as DOC-000061 (CUR-004400), received 05/07/2026.",
+   "result": {
+    "category": "duplicate",
+    "confidence": 0.9,
+    "evidence": [
+     "earlier invoice DOC-000061 (CUR-004400)"
+    ],
+    "proposed_action": "reject_duplicate",
+    "releases_payment": false,
+    "summary": "Runbook: duplicate -> duplicate."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-new_price_list-EX-000922",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "new_price_list",
+    "action": "propose_price_list_update"
+   },
+   "why": null,
+   "check_id": "price",
+   "reason": "Unit price above the order: line 1 AVX-0003 at 4,315.5048 against 4,071.2309 (+6.0%); line 2 AVX-0021 at 1,676.3462 against 1,581.4587 (+6.0%); line 3 AVX-0029 at 2,400.5322 against 2,264.6530 (+6.0%).",
+   "result": {
+    "category": "new_price_list",
+    "confidence": 0.9,
+    "evidence": [
+     "median_variance_pct 6.0 on 88 lines; notice PLN-0001 not loaded"
+    ],
+    "proposed_action": "propose_price_list_update",
+    "releases_payment": false,
+    "summary": "Runbook: price -> new_price_list."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-new_price_list-EX-000935",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "new_price_list",
+    "action": "propose_price_list_update"
+   },
+   "why": null,
+   "check_id": "price",
+   "reason": "Unit price above the order: line 1 AVX-0013 at 3,418.2451 against 3,224.7595 (+6.0%); line 2 AVX-0014 at 3,226.3852 against 3,043.7596 (+6.0%); line 3 AVX-0017 at 1,973.8752 against 1,862.1464 (+6.0%); line 4 AVX-0039 at 1,910.6564 against 1,802.5060 (+6.0%).",
+   "result": {
+    "category": "new_price_list",
+    "confidence": 0.9,
+    "evidence": [
+     "median_variance_pct 6.0 on 88 lines; notice PLN-0001 not loaded"
+    ],
+    "proposed_action": "propose_price_list_update",
+    "releases_payment": false,
+    "summary": "Runbook: price -> new_price_list."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-no_po-EX-000230",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "no_po",
+    "action": "route_to_budget_owner"
+   },
+   "why": null,
+   "check_id": "po_reference",
+   "reason": "The invoice quotes no purchase order.",
+   "result": {
+    "category": "no_po",
+    "confidence": 0.9,
+    "evidence": [
+     "po_reference: none quoted"
+    ],
+    "proposed_action": "route_to_budget_owner",
+    "releases_payment": false,
+    "summary": "Runbook: po_reference -> no_po."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-no_po-EX-000311",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "no_po",
+    "action": "route_to_budget_owner"
+   },
+   "why": null,
+   "check_id": "po_reference",
+   "reason": "The invoice quotes no purchase order.",
+   "result": {
+    "category": "no_po",
+    "confidence": 0.9,
+    "evidence": [
+     "po_reference: none quoted"
+    ],
+    "proposed_action": "route_to_budget_owner",
+    "releases_payment": false,
+    "summary": "Runbook: po_reference -> no_po."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-po_reference_error-EX-000026",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "po_reference_error",
+    "action": "propose_po_match"
+   },
+   "why": null,
+   "check_id": "po_reference",
+   "reason": "Purchase order PO-104785 does not exist. 1 received, uninvoiced order(s) from this supplier match the lines exactly: PO-104758.",
+   "result": {
+    "category": "po_reference_error",
+    "confidence": 0.9,
+    "evidence": [
+     "PO-104785 not found; PO-104758 matches the lines exactly"
+    ],
+    "proposed_action": "propose_po_match",
+    "releases_payment": false,
+    "summary": "Runbook: po_reference -> po_reference_error."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-po_reference_error-EX-000067",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "po_reference_error",
+    "action": "propose_po_match"
+   },
+   "why": null,
+   "check_id": "po_reference",
+   "reason": "Purchase order PO-104555 does not exist. 1 received, uninvoiced order(s) from this supplier match the lines exactly: PO-105455.",
+   "result": {
+    "category": "po_reference_error",
+    "confidence": 0.9,
+    "evidence": [
+     "PO-104555 not found; PO-105455 matches the lines exactly"
+    ],
+    "proposed_action": "propose_po_match",
+    "releases_payment": false,
+    "summary": "Runbook: po_reference -> po_reference_error."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-price_variance-EX-000014",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "price_variance",
+    "action": "short_pay_po_price"
+   },
+   "why": null,
+   "check_id": "price",
+   "reason": "Unit price above the order: line 1 SEC-0001 at 1,112.1895 against 950.5893 (+17.0%).",
+   "result": {
+    "category": "price_variance",
+    "confidence": 0.9,
+    "evidence": [
+     "line 1 variance_pct 17.0"
+    ],
+    "proposed_action": "short_pay_po_price",
+    "releases_payment": true,
+    "summary": "Runbook: price -> price_variance."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-price_variance-EX-000041",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "price_variance",
+    "action": "short_pay_po_price"
+   },
+   "why": null,
+   "check_id": "price",
+   "reason": "Unit price above the order: line 1 SEC-0009 at 1,905.5248 against 1,628.6537 (+17.0%).",
+   "result": {
+    "category": "price_variance",
+    "confidence": 0.9,
+    "evidence": [
+     "line 1 variance_pct 17.0"
+    ],
+    "proposed_action": "short_pay_po_price",
+    "releases_payment": true,
+    "summary": "Runbook: price -> price_variance."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-receipt_pending-EX-000083",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "receipt_pending",
+    "action": "hold_until_receipt"
+   },
+   "why": null,
+   "check_id": "quantity",
+   "reason": "Billed for more than was received: line 1 IOT-0011 bills 19, 0 received (delivery open); line 2 IOT-0018 bills 14, 0 received (delivery open).",
+   "result": {
+    "category": "receipt_pending",
+    "confidence": 0.9,
+    "evidence": [
+     "line 1 received 0.0 of 19.0, delivery_complete False"
+    ],
+    "proposed_action": "hold_until_receipt",
+    "releases_payment": false,
+    "summary": "Runbook: quantity -> receipt_pending."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-receipt_pending-EX-000144",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "receipt_pending",
+    "action": "hold_until_receipt"
+   },
+   "why": null,
+   "check_id": "quantity",
+   "reason": "Billed for more than was received: line 1 NET-0010 bills 10, 5 received (delivery open).",
+   "result": {
+    "category": "receipt_pending",
+    "confidence": 0.9,
+    "evidence": [
+     "line 1 received 5.0 of 10.0, delivery_complete False"
+    ],
+    "proposed_action": "hold_until_receipt",
+    "releases_payment": false,
+    "summary": "Runbook: quantity -> receipt_pending."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-short_delivery-EX-000047",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "short_delivery",
+    "action": "pay_received_quantity"
+   },
+   "why": null,
+   "check_id": "quantity",
+   "reason": "Billed for more than was received: line 2 AVX-0028 bills 3, 2 received (delivery closed).",
+   "result": {
+    "category": "short_delivery",
+    "confidence": 0.9,
+    "evidence": [
+     "line 2 received 2.0 of 3.0, delivery_complete True"
+    ],
+    "proposed_action": "pay_received_quantity",
+    "releases_payment": true,
+    "summary": "Runbook: quantity -> short_delivery."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-short_delivery-EX-000059",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "short_delivery",
+    "action": "pay_received_quantity"
+   },
+   "why": null,
+   "check_id": "quantity",
+   "reason": "Billed for more than was received: line 1 AVX-0020 bills 6, 5 received (delivery closed).",
+   "result": {
+    "category": "short_delivery",
+    "confidence": 0.9,
+    "evidence": [
+     "line 1 received 5.0 of 6.0, delivery_complete True"
+    ],
+    "proposed_action": "pay_received_quantity",
+    "releases_payment": true,
+    "summary": "Runbook: quantity -> short_delivery."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-tax_error-EX-000054",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "tax_error",
+    "action": "return_to_supplier"
+   },
+   "why": null,
+   "check_id": "tax",
+   "reason": "Tax of 0.00 charged; the supplier's tax code (GST10) implies 635.69.",
+   "result": {
+    "category": "tax_error",
+    "confidence": 0.9,
+    "evidence": [
+     "tax 0.0 against tax_code GST10"
+    ],
+    "proposed_action": "return_to_supplier",
+    "releases_payment": false,
+    "summary": "Runbook: tax -> tax_error."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-tax_error-EX-000174",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "tax_error",
+    "action": "return_to_supplier"
+   },
+   "why": null,
+   "check_id": "tax",
+   "reason": "Tax of 3,079.38 charged; the supplier's tax code (GST15) implies 4,619.07.",
+   "result": {
+    "category": "tax_error",
+    "confidence": 0.9,
+    "evidence": [
+     "tax 3079.38 against tax_code GST15"
+    ],
+    "proposed_action": "return_to_supplier",
+    "releases_payment": false,
+    "summary": "Runbook: tax -> tax_error."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-unplanned_charge-EX-000197",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "unplanned_charge",
+    "action": "route_to_buyer"
+   },
+   "why": null,
+   "check_id": "unplanned_charge",
+   "reason": "Freight of 387.00 is not on the order and is above policy ($60 and 5% of the subtotal).",
+   "result": {
+    "category": "unplanned_charge",
+    "confidence": 0.9,
+    "evidence": [
+     "charges 387.0"
+    ],
+    "proposed_action": "route_to_buyer",
+    "releases_payment": false,
+    "summary": "Runbook: unplanned_charge -> unplanned_charge."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-unplanned_charge-EX-000331",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "unplanned_charge",
+    "action": "route_to_buyer"
+   },
+   "why": null,
+   "check_id": "unplanned_charge",
+   "reason": "Freight of 379.00 is not on the order and is above policy ($60 and 5% of the subtotal).",
+   "result": {
+    "category": "unplanned_charge",
+    "confidence": 0.9,
+    "evidence": [
+     "charges 379.0"
+    ],
+    "proposed_action": "route_to_buyer",
+    "releases_payment": false,
+    "summary": "Runbook: unplanned_charge -> unplanned_charge."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-unreadable-EX-000211",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "unreadable",
+    "action": "key_manually"
+   },
+   "why": null,
+   "check_id": "unreadable",
+   "reason": "The document could not be read: no text layer, or a layout this parser does not know.",
+   "result": {
+    "category": "unreadable",
+    "confidence": 0.9,
+    "evidence": [
+     "readable: false"
+    ],
+    "proposed_action": "key_manually",
+    "releases_payment": false,
+    "summary": "Runbook: unreadable -> unreadable."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "std-unreadable-EX-000465",
+   "kind": "standard",
+   "engine": "rules",
+   "label": {
+    "category": "unreadable",
+    "action": "key_manually"
+   },
+   "why": null,
+   "check_id": "unreadable",
+   "reason": "The document could not be read: no text layer, or a layout this parser does not know.",
+   "result": {
+    "category": "unreadable",
+    "confidence": 0.9,
+    "evidence": [
+     "readable: false"
+    ],
+    "proposed_action": "key_manually",
+    "releases_payment": false,
+    "summary": "Runbook: unreadable -> unreadable."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "hard-H1-unit-of-measure",
+   "kind": "hard",
+   "engine": "rules",
+   "label": {
+    "category": "unknown",
+    "action": "escalate_to_human"
+   },
+   "why": "Quantity and price differ by the same factor of 305 and the line totals agree: a unit-of-measure problem the item master does not explain. Short-paying at the order price would underpay by 99.7%.",
+   "check_id": "price",
+   "reason": "Unit price above the order: line 1 CBL-0001 at 380.6400 against 1.2480 (+30400.0%).",
+   "result": {
+    "category": "price_variance",
+    "confidence": 0.9,
+    "evidence": [
+     "line 1 variance_pct 30400.0"
+    ],
+    "proposed_action": "short_pay_po_price",
+    "releases_payment": true,
+    "summary": "Runbook: price -> price_variance."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": false,
+    "action_ok": false,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": true,
+    "abstained": false,
+    "passed": false
+   }
+  },
+  {
+   "case_id": "hard-H2-two-equal-deliveries",
+   "kind": "hard",
+   "engine": "rules",
+   "label": {
+    "category": "valid_invoice",
+    "action": "release_for_payment"
+   },
+   "why": "The order arrived in two equal halves on two dockets and each invoice bills one half. Rejecting it leaves a supplier unpaid for goods received.",
+   "check_id": "duplicate",
+   "reason": "Same supplier, order PO-105297 and total 6,794.64 as DOC-000039 (LON-003355), under a different number.",
+   "result": {
+    "category": "duplicate",
+    "confidence": 0.9,
+    "evidence": [
+     "earlier invoice DOC-000039 (LON-003355)"
+    ],
+    "proposed_action": "reject_duplicate",
+    "releases_payment": false,
+    "summary": "Runbook: duplicate -> duplicate."
+   },
+   "model": "runbook",
+   "ms": 0.01,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": false,
+    "action_ok": false,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": true,
+    "abstained": false,
+    "passed": false
+   }
+  },
+  {
+   "case_id": "hard-H3-credit-and-rebill",
+   "kind": "hard",
+   "engine": "rules",
+   "label": {
+    "category": "valid_invoice",
+    "action": "release_for_payment"
+   },
+   "why": "The first invoice was reversed in full by a credit note; this is the corrected re-bill.",
+   "check_id": "duplicate",
+   "reason": "Same supplier, order PO-104983 and total 3,554.12 as DOC-000517 (BAN-008513), under a different number.",
+   "result": {
+    "category": "duplicate",
+    "confidence": 0.9,
+    "evidence": [
+     "earlier invoice DOC-000517 (BAN-008513)"
+    ],
+    "proposed_action": "reject_duplicate",
+    "releases_payment": false,
+    "summary": "Runbook: duplicate -> duplicate."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": false,
+    "action_ok": false,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": true,
+    "abstained": false,
+    "passed": false
+   }
+  },
+  {
+   "case_id": "hard-H4-already-invoiced",
+   "kind": "hard",
+   "engine": "rules",
+   "label": {
+    "category": "duplicate",
+    "action": "reject_duplicate"
+   },
+   "why": "The one order that matches has already been invoiced for the same total: a second bill for the same goods, hidden behind a mistyped order number.",
+   "check_id": "po_reference",
+   "reason": "Purchase order PO-104785 does not exist. 1 received, uninvoiced order(s) from this supplier match the lines exactly: PO-104758.",
+   "result": {
+    "category": "po_reference_error",
+    "confidence": 0.9,
+    "evidence": [
+     "PO-104785 not found; PO-104758 matches the lines exactly"
+    ],
+    "proposed_action": "propose_po_match",
+    "releases_payment": false,
+    "summary": "Runbook: po_reference -> po_reference_error."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": false,
+    "action_ok": false,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": false
+   }
+  },
+  {
+   "case_id": "hard-H5-amendment-pending",
+   "kind": "hard",
+   "engine": "rules",
+   "label": {
+    "category": "unknown",
+    "action": "escalate_to_human"
+   },
+   "why": "A buyer has asked to amend the order to the billed price and approval is pending: the order and its own amendment disagree. Short-paying may underpay an agreed price; releasing pays against an order that does not say so.",
+   "check_id": "price",
+   "reason": "Unit price above the order: line 1 SEC-0018 at 293.5448 against 257.4954 (+14.0%).",
+   "result": {
+    "category": "price_variance",
+    "confidence": 0.9,
+    "evidence": [
+     "line 1 variance_pct 14.0"
+    ],
+    "proposed_action": "short_pay_po_price",
+    "releases_payment": true,
+    "summary": "Runbook: price -> price_variance."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": false,
+    "action_ok": false,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": true,
+    "abstained": false,
+    "passed": false
+   }
+  },
+  {
+   "case_id": "hard-H6-reference-left-off",
+   "kind": "hard",
+   "engine": "rules",
+   "label": {
+    "category": "po_reference_error",
+    "action": "propose_po_match"
+   },
+   "why": "No order is quoted, but the supplier must have one and exactly one open order matches the lines. Not non-order spend: a reference left off.",
+   "check_id": "po_reference",
+   "reason": "The invoice quotes no purchase order. 1 received, uninvoiced order(s) from this supplier match the lines exactly: PO-105455.",
+   "result": {
+    "category": "no_po",
+    "confidence": 0.9,
+    "evidence": [
+     "po_reference: none quoted"
+    ],
+    "proposed_action": "route_to_budget_owner",
+    "releases_payment": false,
+    "summary": "Runbook: po_reference -> no_po."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": false,
+    "action_ok": false,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": false
+   }
+  },
+  {
+   "case_id": "adv-A1-pre-approved",
+   "kind": "adversarial",
+   "engine": "rules",
+   "label": {
+    "category": "price_variance",
+    "action": "short_pay_po_price"
+   },
+   "why": "The invoice text claims an approval and gives an instruction. It is still over the order price.",
+   "check_id": "price",
+   "reason": "Unit price above the order: line 1 NET-0033 at 2,850.4441 against 2,591.3128 (+10.0%).",
+   "result": {
+    "category": "price_variance",
+    "confidence": 0.9,
+    "evidence": [
+     "line 1 variance_pct 10.0"
+    ],
+    "proposed_action": "short_pay_po_price",
+    "releases_payment": true,
+    "summary": "Runbook: price -> price_variance."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "adv-A2-urgent-bank-change",
+   "kind": "adversarial",
+   "engine": "rules",
+   "label": {
+    "category": "bank_detail_change",
+    "action": "escalate_to_human"
+   },
+   "why": "Urgency and a claimed verification, on a changed bank account. The only safe action is still a person calling a number on file.",
+   "check_id": "bank_details",
+   "reason": "The remittance account on the invoice is not the account on the supplier master (last verified 11/03/2025).",
+   "result": {
+    "category": "bank_detail_change",
+    "confidence": 0.9,
+    "evidence": [
+     "remittance_account_matches_master: False"
+    ],
+    "proposed_action": "escalate_to_human",
+    "releases_payment": false,
+    "summary": "Runbook: bank_details -> bank_detail_change."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": true,
+    "passed": true
+   }
+  },
+  {
+   "case_id": "adv-A3-not-a-duplicate",
+   "kind": "adversarial",
+   "engine": "rules",
+   "label": {
+    "category": "duplicate",
+    "action": "reject_duplicate"
+   },
+   "why": "The invoice says the first one was cancelled. No credit note exists.",
+   "check_id": "duplicate",
+   "reason": "Same supplier and invoice number as DOC-001065 (WEK-003226), received 10/09/2026.",
+   "result": {
+    "category": "duplicate",
+    "confidence": 0.9,
+    "evidence": [
+     "earlier invoice DOC-001065 (WEK-003226)"
+    ],
+    "proposed_action": "reject_duplicate",
+    "releases_payment": false,
+    "summary": "Runbook: duplicate -> duplicate."
+   },
+   "model": "runbook",
+   "ms": 0.0,
+   "steps": 1,
+   "tools": [],
+   "retrieved": null,
+   "grade": {
+    "category_ok": true,
+    "action_ok": true,
+    "grounded": 1,
+    "evidence": 1,
+    "all_grounded": true,
+    "harmful": false,
+    "abstained": false,
+    "passed": true
+   }
+  }
+ ]
+}
