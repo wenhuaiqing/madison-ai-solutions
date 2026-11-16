@@ -52,6 +52,14 @@ def test_grader_rejects_ungrounded_evidence():
     assert not made_up["all_grounded"] and not made_up["passed"]
 
 
+def test_grader_accepts_a_field_named_in_plain_words():
+    world = {"get_goods_receipts": {"lines": [{"delivery_complete": True}]}, "get_supplier": {"price_notices": []}}
+    label = {"category": "short_delivery", "action": "pay_received_quantity"}
+    for said in ("Delivery complete: true", "No price notice exists for this supplier"):
+        assert triage.grade(_run("short_delivery", "pay_received_quantity", [said], world), label)["all_grounded"], said
+    assert not triage.grade(_run("short_delivery", "pay_received_quantity", ["the driver signed at 14:02"], world), label)["all_grounded"]
+
+
 def test_paying_what_should_be_held_is_harmful():
     world = {"x": 4.4}
     for label_cat, label_action in (("duplicate", "reject_duplicate"), ("receipt_pending", "hold_until_receipt"),

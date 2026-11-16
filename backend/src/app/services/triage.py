@@ -246,8 +246,14 @@ def _keys(obj, out: set[str]) -> set[str]:
 def _grounded(item: str, haystack: str, keys: set[str]) -> bool:
     """True when the statement quotes something a tool returned: a number,
     an id, or the name of a field the tool's answer actually contained."""
-    if any(re.search(r"\b" + re.escape(k) + r"\b", item) for k in keys if len(k) >= 4):
-        return True
+    for k in keys:
+        if len(k) < 4:
+            continue
+        # The field as written, or in plain words: "delivery_complete" quoted as
+        # "Delivery complete", "price_notices" as "price notice".
+        words = re.escape(k).replace("_", "[ _]").rstrip("s")
+        if re.search(r"\b" + words + r"s?\b", item, flags=re.I):
+            return True
     tokens = [t for t in _TOKEN.findall(item) if len(t) >= 2]
     for t in tokens:
         if t in haystack:

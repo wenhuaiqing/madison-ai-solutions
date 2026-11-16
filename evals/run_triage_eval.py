@@ -5,6 +5,7 @@ Usage (from backend/):
   uv run python ../evals/run_triage_eval.py            # agent + runbook
   uv run python ../evals/run_triage_eval.py --rules    # runbook only, no model
   uv run python ../evals/run_triage_eval.py --regrade  # re-grade the stored runs, no model
+  uv run python ../evals/run_triage_eval.py --retry-errors  # re-run only the agent cases the provider failed
 """
 
 from __future__ import annotations
@@ -27,6 +28,8 @@ from src.settings import settings  # noqa: E402
 
 OUT = REPO_ROOT / "evals" / "status.json"
 KINDS = ("standard", "hard", "adversarial")
+CASES_SQL = """SELECT e.exception_id, e.check_id, e.reason, c.world, c.label_category
+               FROM exceptions e JOIN cases c USING (exception_id) ORDER BY e.exception_id"""
 
 
 def summarise(results: list[dict], engine: str) -> dict:
@@ -60,7 +63,32 @@ def main() -> int:
     parser.add_argument("--rules", action="store_true", help="runbook only")
     parser.add_argument("--pause", type=float, default=2.0, help="seconds between agent cases (free-tier pacing)")
     parser.add_argument("--regrade", action="store_true", help="re-grade stored runs with the current grader")
+    parser.add_argument("--retry-errors", action="store_true",
+                        help="re-run the agent on cases where the provider failed (timeouts, 5xx); keep everything else")
     args = parser.parse_args()
+
+    if args.retry_errors:
+        status = json.loads(OUT.read_text(encoding="utf-8"))
+        cases = {c["case_id"]: c for c in build_cases(db.rows(CASES_SQL))}
+        for r in status["results"]:
+            if r["engine"] != "agent" or not r.get("error"):
+                continue
+            try:
+                run = run_agent(cases[r["case_id"]]["case"])
+                r.pop("error", None)
+                r.update({"result": run["result"], "model": run["model"], "ms": run["ms"], "steps": run["steps"],
+                          "tools": [t["tool"] for t in run["trace"] if t.get("kind") == "tool"],
+                          "retrieved": run["retrieved"], "grade": grade(run, r["label"]), "retried": True})
+                print(f"{r['case_id']:40s} {'PASS' if r['grade']['passed'] else 'FAIL'} {r['result']['category']}", flush=True)
+            except Exception as exc:  # noqa: BLE001
+                r["error"] = f"{type(exc).__name__}: {str(exc)[:300]}"
+                print(f"{r['case_id']:40s} still ERROR {r['error'][:80]}", flush=True)
+            time.sleep(args.pause)
+        status["summary"]["agent"] = summarise(status["results"], "agent")
+        status["retried_at"] = datetime.now().replace(microsecond=0).isoformat()
+        OUT.write_text(json.dumps(status, indent=1, default=str), encoding="utf-8", newline="\n")
+        print(json.dumps(status["summary"]["agent"], indent=1))
+        return 0
 
     if args.regrade:
         status = json.loads(OUT.read_text(encoding="utf-8"))
@@ -74,8 +102,7 @@ def main() -> int:
         print(json.dumps(status["summary"], indent=1))
         return 0
 
-    cases = build_cases(db.rows("""SELECT e.exception_id, e.check_id, e.reason, c.world, c.label_category
-                                   FROM exceptions e JOIN cases c USING (exception_id) ORDER BY e.exception_id"""))
+    cases = build_cases(db.rows(CASES_SQL))
     results: list[dict] = []
     use_agent = not args.rules and llm.configured()
     started = datetime.now().replace(microsecond=0)
