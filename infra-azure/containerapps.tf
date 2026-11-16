@@ -4,10 +4,11 @@
 # one activation.
 
 resource "azurerm_container_app_environment" "main" {
+  count                      = local.own_environment ? 1 : 0
   name                       = "cae-${var.prefix}"
   location                   = azurerm_resource_group.main.location
   resource_group_name        = azurerm_resource_group.main.name
-  log_analytics_workspace_id = azurerm_log_analytics_workspace.main.id
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.main[0].id
 
   lifecycle {
     ignore_changes = [workload_profile]
@@ -15,8 +16,9 @@ resource "azurerm_container_app_environment" "main" {
 }
 
 resource "azurerm_container_app" "app" {
-  name                         = "app"
-  container_app_environment_id = azurerm_container_app_environment.main.id
+  # Named for the deployment, not "app": it may share an environment with others.
+  name                         = "app-${var.prefix}"
+  container_app_environment_id = local.environment_id
   resource_group_name          = azurerm_resource_group.main.name
   revision_mode                = "Single"
 

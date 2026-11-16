@@ -10,9 +10,21 @@ variable "prefix" {
 }
 
 variable "location" {
-  description = "Azure region."
+  description = "Azure region. Must match the shared environment's region when existing_environment_id is set."
   type        = string
   default     = "australiaeast"
+}
+
+variable "existing_environment_id" {
+  description = <<-EOT
+    Resource id of a Container Apps environment to run in, instead of creating one. A subscription
+    may allow only two environments in total; when both are taken, the app joins one of them. The
+    app, its secrets and its budget stay in this resource group, so deleting the group still removes
+    this deployment - but deleting the group that owns the shared environment would stop it too.
+    Empty creates a dedicated environment and log workspace here.
+  EOT
+  type        = string
+  default     = ""
 }
 
 variable "image_repo" {

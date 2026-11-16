@@ -144,3 +144,9 @@ vault. The data is built inside the image; the images are public on GitHub;
 the two secrets are Container Apps secrets.
 
 To remove everything: `terraform destroy`, or delete the resource group.
+
+A subscription may allow only two Container Apps environments in total. When
+both are taken, set `existing_environment_id` in `terraform.tfvars` to one of
+them: the app, its secrets and its budget still live in `rg-madison-ai` and
+are removed with it, and no workspace is created (the shared environment logs
+to its own). The live demo runs this way.
