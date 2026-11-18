@@ -23,7 +23,9 @@ resource "azurerm_container_app" "app" {
   revision_mode                = "Single"
 
   lifecycle {
-    ignore_changes = [workload_profile_name]
+    # min_replicas is switched by the business-hours schedule (schedule.tf);
+    # a deploy during the day must not switch it back.
+    ignore_changes = [workload_profile_name, template[0].min_replicas]
   }
 
   ingress {
@@ -47,6 +49,8 @@ resource "azurerm_container_app" "app" {
   }
 
   template {
+    # Zero when idle; any visit wakes it. schedule.tf raises the minimum to 1
+    # in business hours, so the warm replica bills at the idle rate.
     min_replicas = var.min_replicas
     # One replica: the demo's state - decisions, the audit log, rate limits -
     # lives in that replica's working copy of the database.
@@ -67,9 +71,10 @@ resource "azurerm_container_app" "app" {
     container {
       name  = "backend"
       image = "${var.image_repo}/backend:${var.image_tag}"
-      # The quarter is small: a full reprocess is a second or two of one core.
-      cpu    = 0.5
-      memory = "1Gi"
+      # The quarter is small. Measured over a week: peak 0.21 cores and 182 MiB
+      # for both containers together, and a full replay under a second.
+      cpu    = 0.25
+      memory = "0.5Gi"
 
       readiness_probe {
         transport               = "HTTP"
