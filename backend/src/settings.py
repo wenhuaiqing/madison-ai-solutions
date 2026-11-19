@@ -33,6 +33,8 @@ class Settings(BaseSettings):
     # file copy, not a rebuild.
     build_db_path: Path = REPO_ROOT / "data" / "workbench.build.duckdb"
     duckdb_path: Path = REPO_ROOT / "data" / "workbench.duckdb"
+    duckdb_memory_limit: str = "200MB"
+    duckdb_threads: int = 1
 
     # ---- Abuse controls ---------------------------------------------------
     triage_rate_limit_per_ip: int = 8
